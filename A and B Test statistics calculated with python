@@ -1,0 +1,125 @@
+import pandas as pd
+
+
+df1 = pd.read_csv('/content/query_result5.csv')
+
+
+
+
+
+
+
+import numpy as np
+from scipy.stats import norm
+
+n_A = 24343  # Sample size for group A
+n_B = 24600  # Sample size for group B
+conversions_A = 955  # Number of conversions in group A
+conversions_B = 1139
+
+p_pool = (conversions_A + conversions_B) / (n_A + n_B)
+
+
+# Calculate the standard error using the pooled proportion
+SE = np.sqrt(p_pool * (1 - p_pool) * (1/n_A + 1/n_B))
+
+# Calculate the Z-score for the difference between two proportions
+p_A = conversions_A / n_A
+p_B = conversions_B / n_B
+Z = (p_A - p_B) / SE
+
+# Calculate the p-value from the Z-score for a two-tailed test
+p_value = 2 * (1 - norm.cdf(abs(Z)))  # Two-tailed test
+
+# Print the results
+print(f"Pooled Proportion: {p_pool}")
+print(f"Standard Error: {SE}")
+print(f"Z-Score: {Z}")
+print(f"P-Value: {p_value}")
+
+# Conclusion based on a significance level of 0.05
+alpha = 0.05
+if p_value < alpha:
+    print("Reject the null hypothesis: There is a significant difference in the conversion rates.")
+else:
+    print("Fail to reject the null hypothesis: There is no significant difference in the conversion rates.")
+
+n_A = 24343  # Sample size for group A
+n_B = 24600  # Sample size for group B
+conversions_A = 955  # Number of conversions in group A
+conversions_B = 1139
+
+# Conversion rates
+
+p_treatment = conversions_B / n_B
+p_control = conversions_A / n_A
+
+# Standard error (unpooled)
+SE = np.sqrt((p_treatment * (1 - p_treatment) / n_B) + (p_control * (1 - p_control) / n_A))
+
+# 95% confidence interval
+Z = norm.ppf(0.975)  # Z-score for 95% CI, two-tailed
+CI_lower = (p_treatment - p_control) - Z * SE
+CI_upper = (p_treatment - p_control) + Z * SE
+
+# Print the results
+print(f"95% Confidence Interval for the difference in conversion rates: ({CI_lower:.4f}, {CI_upper:.4f})")
+
+df2 = pd.read_csv('/content/query_result2.csv')
+
+
+
+average_spent_A = df2[df2['test_group'] == 'A']['average_spent_per_user'].iloc[0]
+average_spent_B = df2[df2['test_group'] == 'B']['average_spent_per_user'].iloc[0]
+
+
+df3 = pd.read_csv('/content/query_result3.csv')
+
+
+# Calculate standard deviation for each group
+std_dev_A = df3[df3['test_group'] == 'A']['total_spent'].std()
+std_dev_B = df3[df3['test_group'] == 'B']['total_spent'].std()
+
+
+from scipy.stats import ttest_ind
+
+
+# Generate simulated data based on the means and standard deviations
+data_A = np.random.normal(average_spent_A, std_dev_A, n_A)
+data_B = np.random.normal(average_spent_B, std_dev_B, n_B)
+
+# Perform Welch's t-test
+t_stat, p_value = ttest_ind(data_A, data_B, equal_var=False)
+
+# Print the results
+print(f"T-statistic: {t_stat:.4f}")
+print(f"P-value: {p_value:.4f}")
+
+# Conclusion based on a significance level of 0.05
+alpha = 0.05
+if p_value < alpha:
+    print("Reject the null hypothesis: There is a significant difference in the average amounts spent between the groups.")
+else:
+    print("Fail to reject the null hypothesis: There is no significant difference in the average amounts spent between the groups.")
+
+#Calculate the standard error of the difference between two means with unequal variances
+SE = np.sqrt((std_dev_B**2 / n_B) + (std_dev_A**2 / n_A))
+
+#Calculate the Degrees of Freedom, For Welch's t-test, the degrees of freedom are calculated using the Welch-Satterthwaite equation
+df = ((std_dev_B**2 / n_B + std_dev_A**2 / n_A)**2 /
+      ((std_dev_B**2 / n_B)**2 / (n_B - 1) +
+       (std_dev_A**2 / n_A)**2 / (n_A - 1)))
+
+
+#Find the t Multiplier for the 95% Confidence Interval
+from scipy.stats import t
+
+t_multiplier = t.ppf(0.975, df)  # Two-tailed test for 95% CI
+
+
+#Calculate the 95% Confidence Interval
+CI_lower = (average_spent_B - average_spent_A) - t_multiplier * SE
+CI_upper = (average_spent_B - average_spent_A) + t_multiplier * SE
+
+# Print the confidence interval
+print(f"95% Confidence Interval for the difference in average amounts spent: ({CI_lower:.2f}, {CI_upper:.2f})")

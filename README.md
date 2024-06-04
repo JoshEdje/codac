@@ -1,4 +1,4 @@
-# Technical Report: Analysis of Conversion Rates and Average Spending Between Test Groups
+# Technical Report: Analysis of Conversion Rates and Average Spending Between Two A/B Test Groups
 
 ## Project Overview 
 An A/B test is an experimentation technique used by businesses to compare two versions of a webpage, advertisement, or product feature to determine which one performs better. By randomly assigning customers or users to either the A or B version, the business can determine which version is more effective at achieving a particular goal.

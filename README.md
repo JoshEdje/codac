@@ -1,7 +1,30 @@
 # Technical Report: Analysis of Conversion Rates and Average Spending Between Test Groups
 
-## Introduction
+## Project Overview 
+An A/B test is an experimentation technique used by businesses to compare two versions of a webpage, advertisement, or product feature to determine which one performs better. By randomly assigning customers or users to either the A or B version, the business can determine which version is more effective at achieving a particular goal.
 This report provides a detailed statistical analysis of the differences in conversion rates and average amounts spent per user between two distinct test groups. Utilizing hypothesis testing and confidence interval estimation, the study aims to determine statistically significant differences between the groups, aiding strategic decision-making. The analyses were conducted using standard statistical methods under assumptions appropriate for the data characteristics.
+
+#### A/B Test Setup
+An A/B test is an experimentation technique used by businesses to compare two versions of a webpage, advertisement, or product feature to determine which one performs better. By randomly assigning customers or users to either the A or B version, the business can determine which version is more effective at achieving a particular goal.
+The Growth team decides to run an A/B test that highlights key products in the food and drink category as a banner at the top of the website. The control group does not see the banner, and the test group sees it as shown below:
+
+![image](https://github.com/JoshEdje/codac/assets/171504805/5429dae1-370a-4abc-b152-63a03a66a25a)
+
+The setup of the A/B test is as follows:
+
+The experiment is only being run on the mobile website.
+A user visits the GloBox main page and is randomly assigned to either the control or test group. This is the join date for the user.
+The page loads the banner if the user is assigned to the test group, and does not load the banner if the user is assigned to the control group.
+The user subsequently may or may not purchase products from the website. It could be on the same day they join the experiment, or days later. If they do make one or more purchases, this is considered a “conversion”.
+
+![image](https://github.com/JoshEdje/codac/assets/171504805/a9671d6c-eb7c-4486-9360-bd0644fc7563)
+
+#### DATASET
+GloBox stores its data in a relational database, which you can access through Beekeeper. 
+postgres://Test:bQNxVzJL4g6u@ep-noisy-flower-846766-pooler.us-east-2.aws.neon.tech/Globox
+
+
+
 
 ### Task 1. Hypothesis Testing on Conversion Rates
 #### Objective

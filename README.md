@@ -23,6 +23,21 @@ The user subsequently may or may not purchase products from the website. It coul
 GloBox stores its data in a relational database, which you can access through Beekeeper. 
 postgres://Test:bQNxVzJL4g6u@ep-noisy-flower-846766-pooler.us-east-2.aws.neon.tech/Globox
 
+#### Data cleaning/preparation 
+in the initial data preparation phase, the following tasks were performed 
+- Data loading & inspection
+- Handling missing values
+- Data cleaning and formatting
+
+#### Exploratory Data analysis 
+This involved exploring the sales data to answer key questions shown below 
+- What are the start and end dates of the experiment?
+- How many total users were in the experiment?
+- How many users were in the control and treatment groups?
+- What was the conversion rate of all users?
+- What is the user conversion rate for the control and treatment groups?
+- What is the average amount spent per user for the control and treatment groups, including users who did not convert?
+
 
 
 

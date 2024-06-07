@@ -38,7 +38,7 @@ This involved exploring the sales data to answer key questions shown below
 - What is the user conversion rate for the control and treatment groups?
 - What is the average amount spent per user for the control and treatment groups, including users who did not convert?
 
-#### Data analysis 
+#### Data analysis (SQL) 
 The questions above were solved using the following SQL queries.  
 ``` sql 
 SELECT 

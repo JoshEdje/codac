@@ -158,7 +158,7 @@ GROUP BY
 
 
 ## Calculating The A/B Test Statistics
-The results provided enabled the construction of both a hypothesis test and confidence interval comparing the two test groups for each metric of interest. Represented by the following tasks. 
+The results provided enabled the construction of both a hypothesis test and confidence interval to compare the two test groups for each metric of interest. The sql code returns favourable results for thr treatment group, bothe the average spent and conversion percent were higher than that of the control group. however, do these results hold any statistical significance or is it by mere chance, considering that the streatment group has 300 more members. The tasks below answer that question.
 
 
 

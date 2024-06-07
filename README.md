@@ -38,6 +38,130 @@ This involved exploring the sales data to answer key questions shown below
 - What is the user conversion rate for the control and treatment groups?
 - What is the average amount spent per user for the control and treatment groups, including users who did not convert?
 
+#### Data analysis 
+The questions above were solved using the following SQL queries.  
+``` sql 
+SELECT 
+    MIN(join_dt) AS start_date, 
+    MAX(join_dt) AS end_date
+FROM 
+    Groups;
+```
+![Screenshot 2024-06-07 192308](https://github.com/JoshEdje/codac/assets/171504805/9929efa5-62ce-465c-8a44-02e4d5a08da0)
+
+
+
+```sql
+SELECT 
+    COUNT(DISTINCT uid) AS total_users
+FROM 
+    groups;
+```
+
+![Screenshot 2024-06-07 192337](https://github.com/JoshEdje/codac/assets/171504805/f91c783e-df16-41bb-b67f-31b3520373dd)
+
+
+```sql
+SELECT 
+    "group", 
+    COUNT(DISTINCT uid) AS user_count
+FROM 
+    groups
+GROUP BY 
+    "group";
+```
+
+![image](https://github.com/JoshEdje/codac/assets/171504805/39def958-b7d8-4427-b844-ce12d58855ee)
+
+
+```sql
+WITH Purchasing_Users AS (
+    SELECT 
+        COUNT(DISTINCT uid) AS purchasers
+    FROM 
+        activity
+),
+Total_Users AS (
+    SELECT 
+        COUNT(DISTINCT uid) AS total
+    FROM 
+        groups
+)
+SELECT 
+    (Purchasing_Users.purchasers::DECIMAL / Total_Users.total) * 100 AS conversion_rate_percentage
+FROM 
+    Purchasing_Users, Total_Users;
+```
+
+![image](https://github.com/JoshEdje/codac/assets/171504805/0bb62767-bb56-491e-9872-12de05210ec5)
+
+
+```sql
+WITH Group_Conversions AS (
+    SELECT 
+        g."group",
+        COUNT(DISTINCT a.uid) AS purchasers
+    FROM 
+        groups g
+    LEFT JOIN 
+        activity a ON g.uid = a.uid
+    GROUP BY 
+        g."group"
+),
+Total_Group_Users AS (
+    SELECT 
+        "group",
+        COUNT(DISTINCT uid) AS total_users
+    FROM 
+        groups
+    GROUP BY 
+        "group"
+)
+SELECT 
+    t."group",
+    ROUND((c.purchasers::DECIMAL / t.total_users) * 100, 2) AS conversion_rate_percentage
+FROM 
+    Total_Group_Users t
+JOIN 
+    Group_Conversions c ON t."group" = c."group";
+```
+
+![image](https://github.com/JoshEdje/codac/assets/171504805/a3efe3ba-ca28-400e-8e23-bf725ab77cd7)
+
+
+```sql
+WITH Group_Spending AS (
+    SELECT 
+        g."group",
+        g.uid,
+        COALESCE(SUM(a.spent), 0) AS total_spent
+    FROM 
+        groups g
+    LEFT JOIN 
+        activity a ON g.uid = a.uid
+    GROUP BY 
+        g."group", g.uid
+)
+SELECT 
+    "group",
+    ROUND(AVG(total_spent), 2) AS avg_spent_per_user
+FROM 
+    Group_Spending
+GROUP BY 
+    "group";
+```
+![image](https://github.com/JoshEdje/codac/assets/171504805/3335f5f3-d19c-4d0c-82c9-b47cdb38d37c)
+
+
+
+
+
+
+## Calculating The A/B Test Statistics
+The results provided enabled the construction of both a hypothesis test and confidence interval comparing the two test groups for each metric of interest. Represented by the following tasks. 
+
+
+
 
 
 
